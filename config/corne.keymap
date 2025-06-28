@@ -7,8 +7,17 @@
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>
+#include <dt-bindings/zmk/reset.h>
 
 / {
+        conditional_layers {
+                compatible = "zmk,conditional-layers";
+                tri_layer {
+                        if-layers = <1 2>;
+                        then-layer = <3>;
+                };
+        };
+
         keymap {
                 compatible = "zmk,keymap";
 
@@ -43,13 +52,27 @@
 // -----------------------------------------------------------------------------------------
 // |  TAB |  !  |  @  |  #  |  $  |  %  |   |  ^  |  &  |  *  |  (  |  )  | BSPC |
 // | CTRL |  [  |  ]   |     |     |     |   |  -  |  =  |    |  \  |  `   |
-// | SHFT |  {  |  }   |     |     |     |   |  _  |  +  |  {  |  }  | "|" |  ~   |
+// | SHFT |     |     |     |     |     |   |  _  |  +  |  {  |  }  | "|" |  ~   |
 //                    | GUI |     | SPC |   | ENT |     | ALT |
                         bindings = <
    &kp  TAB  &kp EXCL &kp AT   &kp HASH &kp DLLR &kp PRCNT   &kp CARET &kp AMPS  &kp ASTRK &kp LPAR &kp RPAR &kp BSPC
    &kp LCTRL &kp LBKT &kp RBKT &kp LBRC &kp RBRC &kp GRAVE &kp MINUS &kp EQUAL &kp BSLH &kp GRAVE &trans &trans 
    &kp LSHFT &trans   &trans &trans   &trans   &trans      &kp UNDER &kp PLUS  &kp PIPE &kp TILDE &trans &trans 
                              &kp LGUI &trans   &kp SPACE   &kp RET   &trans    &kp RALT
+                        >;
+                };
+
+                adjust_layer {
+// -----------------------------------------------------------------------------------------
+// | RESET | BOOT |     |     |     |     |   |     |     |     |     | BOOT | RESET |
+// |       |      |     |     |     |     |   |     |     |     |     |      |       |
+// |       |      |     |     |     |     |   |     |     |     |     |      |       |
+//                      | GUI |     | SPC |   | ENT |     | ALT |
+                        bindings = <
+   &sys_reset &bootloader &trans &trans &trans &trans   &trans &trans &trans &trans &bootloader &sys_reset
+   &trans     &trans      &trans &trans &trans &trans   &trans &trans &trans &trans &trans      &trans
+   &trans     &trans      &trans &trans &trans &trans   &trans &trans &trans &trans &trans      &trans
+                                 &trans &trans &trans   &trans &trans &trans
                         >;
                 };
         };
